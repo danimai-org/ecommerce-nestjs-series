@@ -1,22 +1,14 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
-  ApiAcceptedResponse,
   ApiBadRequestResponse,
-  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  EmailVerifyDto,
-  LoginDto,
-  RegisterDto,
-  ResetPasswordDto,
-  SendVerifyMailDto,
-} from '../email.dto';
-import { EmailService } from '../services/email.service';
+import { LoginDto, ResetPasswordDto, SendVerifyMailDto } from './email.dto';
+import { EmailService } from './email.service';
 
 @ApiTags('Auth Email')
 @Controller({
@@ -25,26 +17,6 @@ import { EmailService } from '../services/email.service';
 })
 export class EmailController {
   constructor(private emailService: EmailService) {}
-
-  @Post('/register')
-  @ApiOperation({ summary: 'Register by email' })
-  @ApiCreatedResponse({
-    description: 'User successfully registered.',
-  })
-  @HttpCode(HttpStatus.CREATED)
-  async register(@Body() registerDto: RegisterDto) {
-    return this.emailService.register(registerDto);
-  }
-
-  @Post('/verify')
-  @ApiOperation({ summary: 'Verify Email address.' })
-  @ApiAcceptedResponse({
-    description: 'Email verified successfully.',
-  })
-  @HttpCode(HttpStatus.ACCEPTED)
-  async verify(@Body() emailVerifyDto: EmailVerifyDto) {
-    return this.emailService.verify(emailVerifyDto);
-  }
 
   @Post('/login')
   @ApiOperation({ summary: 'Log in with Email.' })

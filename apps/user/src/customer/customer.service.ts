@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Customer } from 'common/entities/customer.entity';
-import { RegisterDto } from '../auth/email.dto';
+import { RegisterDto } from '../auth-email/email.dto';
 import { CustomerUpdateDto } from './customer.dto';
 import { MediaService } from '../../../../common/modules/media/media.service';
 import { plainToInstance } from 'class-transformer';
@@ -38,7 +38,7 @@ export class CustomerService {
     }
 
     await this.customerRepository.update(customer.id, updateData);
-    if (avatar && updateData.avatar_id !== previousImage) {
+    if (avatar && previousImage && updateData.avatar_id !== previousImage) {
       await this.mediaService.deleteMedia(previousImage);
     }
 

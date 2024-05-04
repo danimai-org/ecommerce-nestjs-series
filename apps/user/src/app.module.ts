@@ -2,14 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configLoads } from '../../../common/modules/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeORMConfigFactory } from '../../../common/modules/database/typeorm.factory';
+import { TypeORMConfigFactory } from 'common/modules/database/typeorm.factory';
 import { AuthModule } from './auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailerConfigClass } from '../../../common/modules/mail/mailerConfig.service';
 import { GoogleAuthModule } from './auth-google/google.module';
 import { CustomerModule } from './customer/customer.module';
+import { EmailAuthModule } from './auth-email/email.module';
 
-const modules = [AuthModule, CustomerModule, GoogleAuthModule];
+const modules = [AuthModule, EmailAuthModule, GoogleAuthModule, CustomerModule];
 
 export const global_modules = [
   ConfigModule.forRoot({

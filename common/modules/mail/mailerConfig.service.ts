@@ -29,7 +29,7 @@ export class MailerConfigClass implements MailerOptionsFactory {
       template: {
         dir: path.join(
           this.configService.get('app.workingDirectory'),
-          'src',
+          'common',
           'modules',
           'mail',
           'templates',

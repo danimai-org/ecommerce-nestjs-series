@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EmailController } from './controllers/email.controller';
-import { EmailService } from './services/email.service';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -9,7 +7,7 @@ import { TokenModule } from '../token/token.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { SessionModule } from '../session/session.module';
 import { RefreshJwtStrategy } from './strategies/refresh.strategy';
-import { AuthController } from './controllers/auth.controller';
+import { AuthController } from './auth.controller';
 import { Customer } from 'common/entities/customer.entity';
 import { CustomerModule } from '../customer/customer.module';
 
@@ -29,8 +27,8 @@ import { CustomerModule } from '../customer/customer.module';
       }),
     }),
   ],
-  controllers: [EmailController, AuthController],
-  providers: [EmailService, AuthService, JwtStrategy, RefreshJwtStrategy],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy, RefreshJwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -9,14 +9,13 @@ import {
   RegisterDto,
   ResetPasswordDto,
   SendVerifyMailDto,
-} from '../email.dto';
-import { CustomerService } from '../../customer/customer.service';
-import { TokenService } from '../../token/token.service';
+} from './email.dto';
+import { CustomerService } from '../customer/customer.service';
+import { TokenService } from '../token/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from 'common/entities/customer.entity';
+import { AuthProvider, Customer } from 'common/entities/customer.entity';
 import { Repository } from 'typeorm';
-import { AuthService } from './auth.service';
-import { AuthProvider } from '../auth.provider';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class EmailService {

@@ -29,7 +29,7 @@ export class TokenService {
 
   async verify(token: string, type: keyof typeof TokenType) {
     const tokenEntity = await this.tokenRepository.findOne({
-      relations: ['user'],
+      relations: ['customer'],
       loadEagerRelations: true,
       where: { token, type: TokenType[type], is_used: false },
     });

@@ -3,19 +3,17 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { LoginDto, ResetPasswordDto, SendVerifyMailDto } from '../email.dto';
-import { UserService } from '../../user/user.service';
-import { TokenService } from '../../token/token.service';
+import { LoginDto, ResetPasswordDto, SendVerifyMailDto } from './email.dto';
+import { TokenService } from '../token/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'common/entities/user.entity';
 import { Repository } from 'typeorm';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class EmailService {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private tokenService: TokenService,
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}

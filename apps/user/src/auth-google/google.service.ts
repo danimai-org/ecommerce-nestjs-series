@@ -4,9 +4,8 @@ import { google, Auth } from 'googleapis';
 import { CustomerService } from '../customer/customer.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from 'common/entities/customer.entity';
-import { AuthService } from '../auth/services/auth.service';
-import { AuthProvider } from '../auth/auth.provider';
+import { AuthProvider, Customer } from 'common/entities/customer.entity';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class GoogleService {

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'common/entities/user.entity';
+import { Customer } from 'common/entities/customer.entity';
 import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { MailData } from 'common/modules/mail/mail.interface';
-import { SessionService } from '../../session/session.service';
+import { SessionService } from '../session/session.service';
 
 @Injectable()
 export class AuthService {
@@ -15,11 +15,11 @@ export class AuthService {
     private sessionService: SessionService,
   ) {}
 
-  async createJwtToken(user: User) {
+  async createJwtToken(customer: Customer) {
     const refreshTokenExpiresIn = this.configService.get(
       'auth.refreshTokenExpiresIn',
     );
-    const session = await this.sessionService.create(user);
+    const session = await this.sessionService.create(customer);
 
     const accessToken = await this.createAccessToken(session.id);
     const refreshToken = this.jwtService.sign(
@@ -54,7 +54,7 @@ export class AuthService {
     return accessToken;
   }
 
-  async userRegisterEmail(
+  async customerRegisterEmail(
     mailData: MailData<{
       hash: string;
     }>,

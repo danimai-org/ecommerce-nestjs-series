@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/nest-series/test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
-    "migration:generate": "npm run typeorm -- migration:generate src/modules/database/migrations/migrations -d ormconfig.ts",
+    "migration:generate": "npm run typeorm -- migration:generate common/modules/database/migrations/migrations -d ormconfig.ts",
     "migration:run": "npm run typeorm -- -d ormconfig.ts migration:run",
     "migration:revert": "npm run typeorm -- -d ormconfig.ts migration:revert"
   },
@@ -91,7 +91,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/util(|/.*)$": "<rootDir>/libs/util/src/$1"
+    }
   }
 }

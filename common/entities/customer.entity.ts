@@ -15,7 +15,11 @@ import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Media } from './media.entity';
 import { CustomerSession } from './customer_session.entity';
-import { AuthProvider } from 'apps/user/src/auth/auth.provider';
+
+export enum AuthProvider {
+  GOOGLE = 'GOOGLE',
+  EMAIL = 'EMAIL',
+}
 
 @Entity({ name: 'customers' })
 export class Customer extends BaseEntity {

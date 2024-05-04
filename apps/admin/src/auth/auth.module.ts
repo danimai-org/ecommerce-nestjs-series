@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { EmailController } from './controllers/email.controller';
-import { EmailService } from './services/email.service';
-import { AuthService } from './services/auth.service';
+import { EmailController } from '../auth-email/email.controller';
+import { EmailService } from '../auth-email/email.service';
+import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'common/entities/user.entity';
@@ -11,7 +11,7 @@ import { TokenModule } from '../token/token.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { SessionModule } from '../session/session.module';
 import { RefreshJwtStrategy } from './strategies/refresh.strategy';
-import { AuthController } from './controllers/auth.controller';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
