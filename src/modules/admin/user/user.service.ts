@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { RegisterDto } from 'src/modules/user/auth/email.dto';
 import { UserUpdateDto } from './user.dto';
-import { MediaService } from '../media/media.service';
+import { MediaService } from '../../media/media.service';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
@@ -16,9 +16,7 @@ export class UserService {
   ) {}
 
   async create(
-    userCreateDto:
-      | RegisterDto
-      | Pick<User, 'email_verified_at' | 'is_active' | 'provider'>,
+    userCreateDto: RegisterDto | Pick<User, 'email_verified_at' | 'is_active'>,
   ) {
     const user = User.create({ ...userCreateDto });
     return this.userRepository.save(user);

@@ -1,16 +1,24 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { UserAppModule } from './modules/user/app.module';
 import { ConfigService } from '@nestjs/config';
 import { createApplication, documentationBuilder } from './utils/bootstrap';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
+  // User Module Setup
+  const userApp = await NestFactory.create(UserAppModule);
+  userApp.setGlobalPrefix('/user');
+  createApplication(userApp);
+  const userConfigService = userApp.get(ConfigService);
+  documentationBuilder(userApp, userConfigService);
+  await userApp.listen(userConfigService.get('app.port') || 8000);
 
-  // bootstrapped functions
-  createApplication(app);
-  documentationBuilder(app, configService);
+  // Admin Module Setup
+  const adminApp = await NestFactory.create(UserAppModule);
+  adminApp.setGlobalPrefix('/admin');
+  createApplication(adminApp);
+  const adminConfigService = adminApp.get(ConfigService);
+  documentationBuilder(adminApp, adminConfigService);
 
-  await app.listen(configService.get('app.port') || 8000);
+  await adminApp.listen(adminConfigService.get('app.adminPort') || 8001);
 }
 bootstrap();

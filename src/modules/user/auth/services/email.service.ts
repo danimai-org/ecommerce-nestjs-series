@@ -10,10 +10,10 @@ import {
   ResetPasswordDto,
   SendVerifyMailDto,
 } from '../email.dto';
-import { UserService } from '../../user/user.service';
+import { CustomerService } from '../../customer/customer.service';
 import { TokenService } from '../../token/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { Customer } from 'src/entities/customer.entity';
 import { Repository } from 'typeorm';
 import { AuthService } from './auth.service';
 import { AuthProvider } from '../auth.provider';
@@ -22,16 +22,17 @@ import { AuthProvider } from '../auth.provider';
 export class EmailService {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private customerService: CustomerService,
     private tokenService: TokenService,
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
   ) {}
 
   async register(registerDto: RegisterDto) {
-    const user = await this.userService.create(registerDto);
-    const token = await this.tokenService.create(user, 'REGISTER_VERIFY');
-    await this.authService.userRegisterEmail({
-      to: user.email,
+    const customer = await this.customerService.create(registerDto);
+    const token = await this.tokenService.create(customer, 'REGISTER_VERIFY');
+    await this.authService.customerRegisterEmail({
+      to: customer.email,
       data: {
         hash: token.token,
       },
@@ -40,60 +41,62 @@ export class EmailService {
 
   async verify(verifyDto: EmailVerifyDto) {
     try {
-      const user = await this.tokenService.verify(
+      const customer = await this.tokenService.verify(
         verifyDto.verify_token,
         'REGISTER_VERIFY',
       );
-      user.email_verified_at = new Date();
-      user.is_active = true;
-      await user.save();
+      customer.email_verified_at = new Date();
+      customer.is_active = true;
+      await customer.save();
     } catch (e) {
       throw new UnprocessableEntityException({ verify_token: e.message });
     }
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.userRepository.findOne({
+    const customer = await this.customerRepository.findOne({
       where: { email: loginDto.email.toLowerCase() },
     });
-    if (user.provider !== AuthProvider.EMAIL) {
+    if (customer.provider !== AuthProvider.EMAIL) {
       throw new UnprocessableEntityException({
-        email: `User is registered with ${user.provider}`,
+        email: `Customer is registered with ${customer.provider}`,
       });
     }
-    if (!user) {
-      throw new UnprocessableEntityException({ email: 'User not found' });
+    if (!customer) {
+      throw new UnprocessableEntityException({ email: 'Customer not found' });
     }
-    if (!user.is_active) {
-      throw new UnprocessableEntityException({ email: 'User not active' });
+    if (!customer.is_active) {
+      throw new UnprocessableEntityException({ email: 'Customer not active' });
     }
-    if (!user.email_verified_at) {
-      throw new UnprocessableEntityException({ email: 'User not verified' });
+    if (!customer.email_verified_at) {
+      throw new UnprocessableEntityException({
+        email: 'Customer not verified',
+      });
     }
-    if (!user.comparePassword(loginDto.password)) {
+    if (!customer.comparePassword(loginDto.password)) {
       throw new UnprocessableEntityException({
         password: 'Password is incorrect',
       });
     }
-    return this.authService.createJwtToken(user);
+    return this.authService.createJwtToken(customer);
   }
 
   async sendVerifyMail(sendVerifyMailDto: SendVerifyMailDto) {
-    const user = await this.userRepository.findOne({
+    const customer = await this.customerRepository.findOne({
       where: { email: sendVerifyMailDto.email.toLowerCase() },
     });
 
-    if (!user) {
-      throw new NotFoundException({ email: 'User not found' });
+    if (!customer) {
+      throw new NotFoundException({ email: 'Customer not found' });
     }
-    if (user.email_verified_at) {
+    if (customer.email_verified_at) {
       throw new UnprocessableEntityException({
-        email: 'User already verified',
+        email: 'Customer already verified',
       });
     }
-    const token = await this.tokenService.create(user, 'REGISTER_VERIFY');
-    await this.authService.userRegisterEmail({
-      to: user.email,
+    const token = await this.tokenService.create(customer, 'REGISTER_VERIFY');
+    await this.authService.customerRegisterEmail({
+      to: customer.email,
       data: {
         hash: token.token,
       },
@@ -101,23 +104,23 @@ export class EmailService {
   }
 
   async sendForgotMail(sendForgotMailDto: SendVerifyMailDto) {
-    const user = await this.userRepository.findOne({
+    const customer = await this.customerRepository.findOne({
       where: { email: sendForgotMailDto.email.toLowerCase() },
     });
 
-    if (!user) {
-      throw new UnprocessableEntityException({ email: 'User not found' });
+    if (!customer) {
+      throw new UnprocessableEntityException({ email: 'Customer not found' });
     }
 
-    if (!user.email_verified_at) {
+    if (!customer.email_verified_at) {
       throw new UnprocessableEntityException({
         email: 'Please verify email first.',
       });
     }
 
-    const token = await this.tokenService.create(user, 'RESET_PASSWORD');
+    const token = await this.tokenService.create(customer, 'RESET_PASSWORD');
     await this.authService.forgotPasswordEmail({
-      to: user.email,
+      to: customer.email,
       data: {
         hash: token.token,
       },
@@ -126,12 +129,12 @@ export class EmailService {
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     try {
-      const user = await this.tokenService.verify(
+      const customer = await this.tokenService.verify(
         resetPasswordDto.reset_token,
         'RESET_PASSWORD',
       );
-      user.password = resetPasswordDto.password;
-      await user.save();
+      customer.password = resetPasswordDto.password;
+      await customer.save();
     } catch (e) {
       throw new UnprocessableEntityException({ reset_token: e.message });
     }

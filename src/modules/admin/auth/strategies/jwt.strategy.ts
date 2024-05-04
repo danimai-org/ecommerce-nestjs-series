@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { SessionService } from 'src/modules/user/session/session.service';
+import { SessionService } from 'src/modules/admin/session/session.service';
 
 export type JwtPayload = {
   id: string;
@@ -39,12 +39,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         throw new UnauthorizedException('Invalid token provided.');
       }
 
-      const { customer } = session;
-      if (!customer.email_verified_at) {
+      const { user } = session;
+      if (!user.email_verified_at) {
         throw new UnauthorizedException('Please verify your email.');
       }
 
-      if (!customer.is_active) {
+      if (!user.is_active) {
         throw new ForbiddenException('Your account is not active.');
       }
       return session;

@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from 'src/entities/customer.entity';
-import { CustomerToken, TokenType } from 'src/entities/customer_token.entity';
+import { User } from 'src/entities/user.entity';
+import { Token, TokenType } from 'src/entities/user_token.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class TokenService {
   constructor(
-    @InjectRepository(CustomerToken)
-    private readonly tokenRepository: Repository<CustomerToken>,
+    @InjectRepository(Token)
+    private readonly tokenRepository: Repository<Token>,
   ) {}
 
   async create(
-    customer: Customer,
+    user: User,
     type: keyof typeof TokenType = 'REGISTER_VERIFY',
     expires_at: Date = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
   ) {
-    const token = CustomerToken.create({
-      customer_id: customer.id,
+    const token = Token.create({
+      user_id: user.id,
       type: TokenType[type],
       expires_at,
     });
@@ -38,6 +38,6 @@ export class TokenService {
     }
     tokenEntity.is_used = true;
     await tokenEntity.save();
-    return tokenEntity.customer;
+    return tokenEntity.user;
   }
 }

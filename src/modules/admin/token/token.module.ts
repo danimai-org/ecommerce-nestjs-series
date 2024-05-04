@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TokenService } from './token.service';
-import { CustomerToken } from 'src/entities/customer_token.entity';
+import { Token } from 'src/entities/user_token.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CustomerToken])],
+  imports: [TypeOrmModule.forFeature([Token])],
   providers: [TokenService],
   exports: [TokenService],
 })

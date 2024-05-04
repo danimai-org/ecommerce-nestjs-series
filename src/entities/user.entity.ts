@@ -14,9 +14,8 @@ import { Token } from './user_token.entity';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Media } from './media.entity';
-import { Session } from './session.entity';
+import { Session } from './user_session.entity';
 import { Post } from './post.entity';
-import { AuthProvider } from 'src/modules/user/auth/auth.provider';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -44,10 +43,6 @@ export class User extends BaseEntity {
   @ApiHideProperty()
   @Column({ type: 'boolean', default: false })
   is_active: boolean;
-
-  @ApiHideProperty()
-  @Column({ default: AuthProvider.EMAIL, enum: AuthProvider })
-  provider: AuthProvider;
 
   @ApiHideProperty()
   @OneToMany(() => Token, (token) => token.user)

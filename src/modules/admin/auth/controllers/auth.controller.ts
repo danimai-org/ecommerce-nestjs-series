@@ -8,7 +8,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
-import { CustomerSession } from 'src/entities/customer_session.entity';
+import { Session } from 'src/entities/user_session.entity';
 import { SessionService } from 'src/modules/user/session/session.service';
 import { SessionParam } from 'src/decorators/session.decorator';
 
@@ -28,7 +28,7 @@ export class AuthController {
   @Post('/refresh-token')
   @ApiOperation({ summary: 'Refresh your access token.' })
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@SessionParam() { id }: CustomerSession) {
+  async refreshToken(@SessionParam() { id }: Session) {
     return this.authService.createAccessToken(id);
   }
 
@@ -36,7 +36,7 @@ export class AuthController {
   @Post('/logout')
   @ApiOperation({ summary: 'Expire session key' })
   @HttpCode(HttpStatus.OK)
-  async logout(@SessionParam() { id }: CustomerSession) {
+  async logout(@SessionParam() { id }: Session) {
     return this.sessionService.delete(id);
   }
 }

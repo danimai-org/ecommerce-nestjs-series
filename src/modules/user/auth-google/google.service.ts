@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { google, Auth } from 'googleapis';
-import { UserService } from '../user/user.service';
+import { CustomerService } from '../customer/customer.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { Customer } from 'src/entities/customer.entity';
 import { AuthService } from '../auth/services/auth.service';
 import { AuthProvider } from '../auth/auth.provider';
 
@@ -13,11 +13,11 @@ export class GoogleService {
   oauthClient: Auth.OAuth2Client;
 
   constructor(
-    private readonly userService: UserService,
+    private readonly customerService: CustomerService,
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Customer)
+    private readonly customerRepository: Repository<Customer>,
   ) {
     const clientID = this.configService.get('google.auth.client_id');
     const clientSecret = this.configService.get('google.auth.client_secret');
@@ -28,18 +28,18 @@ export class GoogleService {
   async authenticate(token: string) {
     const { email } = await this.oauthClient.getTokenInfo(token);
 
-    const user = await this.userRepository.findOneBy({ email });
+    const customer = await this.customerRepository.findOneBy({ email });
 
-    if (user) {
-      return this.handleRegisteredUser(user);
+    if (customer) {
+      return this.handleRegisteredCustomer(customer);
     } else {
-      return this.registerUser(token, email);
+      return this.registerCustomer(token, email);
     }
   }
 
-  async registerUser(token: string, email: string) {
-    const { given_name, family_name } = await this.getUserData(token);
-    const user = await this.userService.create({
+  async registerCustomer(token: string, email: string) {
+    const { given_name, family_name } = await this.getCustomerData(token);
+    const customer = await this.customerService.create({
       email,
       email_verified_at: new Date(),
       first_name: given_name,
@@ -47,24 +47,24 @@ export class GoogleService {
       is_active: true,
       provider: AuthProvider.GOOGLE,
     });
-    return this.handleRegisteredUser(user);
+    return this.handleRegisteredCustomer(customer);
   }
 
-  async getUserData(token: string) {
-    const userInfoClient = google.oauth2('v2').userinfo;
+  async getCustomerData(token: string) {
+    const customerInfoClient = google.oauth2('v2').userinfo;
 
     this.oauthClient.setCredentials({
       access_token: token,
     });
 
-    const userInfoResponse = await userInfoClient.get({
+    const customerInfoResponse = await customerInfoClient.get({
       auth: this.oauthClient,
     });
 
-    return userInfoResponse.data;
+    return customerInfoResponse.data;
   }
 
-  async handleRegisteredUser(user: User) {
-    return this.authService.createJwtToken(user);
+  async handleRegisteredCustomer(customer: Customer) {
+    return this.authService.createJwtToken(customer);
   }
 }

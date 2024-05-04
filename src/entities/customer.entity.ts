@@ -10,16 +10,15 @@ import {
 } from 'typeorm';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
-import { Token } from './user_token.entity';
+import { CustomerToken } from './customer_token.entity';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Media } from './media.entity';
-import { Session } from './session.entity';
-import { Post } from './post.entity';
+import { CustomerSession } from './customer_session.entity';
 import { AuthProvider } from 'src/modules/user/auth/auth.provider';
 
-@Entity({ name: 'users' })
-export class User extends BaseEntity {
+@Entity({ name: 'customers' })
+export class Customer extends BaseEntity {
   @ApiProperty({ example: 'Danimai' })
   @Column({ type: 'varchar', length: 50 })
   first_name: string;
@@ -50,8 +49,8 @@ export class User extends BaseEntity {
   provider: AuthProvider;
 
   @ApiHideProperty()
-  @OneToMany(() => Token, (token) => token.user)
-  tokens: Token[];
+  @OneToMany(() => CustomerToken, (token) => token.customer)
+  tokens: CustomerToken[];
 
   @ApiHideProperty()
   @Exclude()
@@ -67,12 +66,8 @@ export class User extends BaseEntity {
   avatar_id: string;
 
   @ApiHideProperty()
-  @OneToMany(() => Session, (session) => session.user)
-  sessions: Session[];
-
-  @ApiHideProperty()
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+  @OneToMany(() => CustomerSession, (session) => session.customer)
+  sessions: CustomerSession[];
 
   @AfterLoad()
   storePasswordInCache() {

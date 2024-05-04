@@ -1,20 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CustomerSession } from 'src/entities/customer_session.entity';
-import { Customer } from 'src/entities/customer.entity';
+import { Session } from 'src/entities/user_session.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class SessionService {
   constructor(
-    @InjectRepository(CustomerSession)
-    private sessionRepository: Repository<CustomerSession>,
+    @InjectRepository(Session)
+    private sessionRepository: Repository<Session>,
   ) {}
 
-  create(customer: Customer) {
+  create(user: User) {
     return this.sessionRepository
       .create({
-        customer,
+        user,
       })
       .save();
   }

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { configLoads } from './modules/user/config';
+import { configLoads } from '../config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeORMConfigFactory } from './modules/user/database/typeorm.factory';
-import { AuthModule } from './modules/user/auth/auth.module';
-import { UserModule } from './modules/user/user/user.module';
+import { TypeORMConfigFactory } from '../database/typeorm.factory';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from '../admin/user/user.module';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailerConfigClass } from './modules/user/mail/mailerConfig.service';
-import { GoogleAuthModule } from './modules/user/auth-google/google.module';
-import { PostModule } from './modules/user/post/post.module';
+import { MailerConfigClass } from '../mail/mailerConfig.service';
+import { GoogleAuthModule } from './auth-google/google.module';
+import { PostModule } from './post/post.module';
 
 const modules = [AuthModule, UserModule, GoogleAuthModule, PostModule];
 
@@ -29,4 +29,4 @@ export const global_modules = [
 @Module({
   imports: [...global_modules, ...modules],
 })
-export class AppModule {}
+export class UserAppModule {}
