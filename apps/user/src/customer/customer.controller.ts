@@ -25,7 +25,7 @@ import { CustomerUpdateDto } from './customer.dto';
 @ApiTags('Customer')
 @ApiBearerAuth()
 @Controller({
-  path: 'users',
+  path: 'customers',
   version: '1',
 })
 @UseGuards(AuthGuard('jwt'))

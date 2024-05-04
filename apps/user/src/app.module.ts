@@ -4,13 +4,12 @@ import { configLoads } from '../../../common/modules/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeORMConfigFactory } from '../../../common/modules/database/typeorm.factory';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from '../../admin/src/user/user.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailerConfigClass } from '../../../common/modules/mail/mailerConfig.service';
 import { GoogleAuthModule } from './auth-google/google.module';
-import { PostModule } from './post/post.module';
+import { CustomerModule } from './customer/customer.module';
 
-const modules = [AuthModule, UserModule, GoogleAuthModule, PostModule];
+const modules = [AuthModule, CustomerModule, GoogleAuthModule];
 
 export const global_modules = [
   ConfigModule.forRoot({
