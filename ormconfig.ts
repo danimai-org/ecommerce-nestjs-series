@@ -8,9 +8,7 @@ dotenv.config();
 export const configs: PostgresConnectionOptions = {
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [
-    path.join(__dirname, '/../../common/entities/**/*.entity.{ts,js}'),
-  ],
+  entities: [path.join(__dirname, '/common/entities/**/*.entity.{ts,js}')],
   migrations: [
     path.join(__dirname, '/common/modules/database/migrations/*{.ts,.js}'),
   ],
