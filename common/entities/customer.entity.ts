@@ -35,6 +35,14 @@ export class Customer extends BaseEntity {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
+  @ApiProperty({ example: '77220646XX' })
+  @Column({ type: 'varchar', length: 13, unique: true })
+  phone_number: string;
+
+  @ApiProperty({ example: '91' })
+  @Column({ type: 'varchar', length: 3 })
+  country_code: string;
+
   @ApiProperty({ example: 'Password@123' })
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Exclude()
