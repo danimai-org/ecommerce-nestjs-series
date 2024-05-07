@@ -9,8 +9,15 @@ import { MailerConfigClass } from '../../../common/modules/mail/mailerConfig.ser
 import { GoogleAuthModule } from './auth-google/google.module';
 import { CustomerModule } from './customer/customer.module';
 import { EmailAuthModule } from './auth-email/email.module';
+import { AddressModule } from './address/address.module';
 
-const modules = [AuthModule, EmailAuthModule, GoogleAuthModule, CustomerModule];
+const modules = [
+  AuthModule,
+  EmailAuthModule,
+  GoogleAuthModule,
+  CustomerModule,
+  AddressModule,
+];
 
 export const global_modules = [
   ConfigModule.forRoot({

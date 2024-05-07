@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
@@ -15,6 +16,7 @@ import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Media } from './media.entity';
 import { CustomerSession } from './customer_session.entity';
+import type { Address } from './address.entity';
 
 export enum AuthProvider {
   GOOGLE = 'GOOGLE',
@@ -80,6 +82,9 @@ export class Customer extends BaseEntity {
   @ApiHideProperty()
   @OneToMany(() => CustomerSession, (session) => session.customer)
   sessions: CustomerSession[];
+
+  @OneToMany('Address', 'customer')
+  addresses: Relation<Address>[];
 
   @AfterLoad()
   storePasswordInCache() {

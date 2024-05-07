@@ -56,13 +56,15 @@ export class EmailService {
     const customer = await this.customerRepository.findOne({
       where: { email: loginDto.email.toLowerCase() },
     });
+
+    if (!customer) {
+      throw new UnprocessableEntityException({ email: 'Customer not found' });
+    }
+
     if (customer.provider !== AuthProvider.EMAIL) {
       throw new UnprocessableEntityException({
         email: `Customer is registered with ${customer.provider}`,
       });
-    }
-    if (!customer) {
-      throw new UnprocessableEntityException({ email: 'Customer not found' });
     }
     if (!customer.is_active) {
       throw new UnprocessableEntityException({ email: 'Customer not active' });

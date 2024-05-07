@@ -37,6 +37,14 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   last_name: string;
+
+  @ApiProperty({ example: '77XXXX' })
+  @IsString()
+  phone_number: string;
+
+  @ApiProperty({ example: '91' })
+  @IsString()
+  country_code: string;
 }
 
 export class EmailVerifyDto {

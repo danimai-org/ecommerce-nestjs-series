@@ -1,3 +1,4 @@
+import { Address } from './address.entity';
 import { CustomerSession } from './customer_session.entity';
 import { CustomerToken } from './customer_token.entity';
 import { Media } from './media.entity';
@@ -14,4 +15,5 @@ export const loadEntities = [
   Session,
   Token,
   User,
+  Address,
 ];
