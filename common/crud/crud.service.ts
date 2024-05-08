@@ -26,8 +26,11 @@ export const ServiceFactory = <T extends abstract new (...args: any) => any>({
       );
     }
 
-    async getOne(id: string, user?: Customer) {
-      return this.repository.findOneBy({ id, customer_id: user.id } as any);
+    async getOne(instance: InstanceType<T>, user?: Customer) {
+      return this.repository.findOneBy({
+        id: instance.id,
+        customer_id: user.id,
+      } as any);
     }
 
     async create(dto: any, user?: Customer) {
@@ -38,12 +41,22 @@ export const ServiceFactory = <T extends abstract new (...args: any) => any>({
       return this.repository.save(newEntity);
     }
 
-    async update(id: string, dto: any, user?: Customer) {
-      return this.repository.update({ id, customer_id: user.id } as any, dto);
+    async update(instance: InstanceType<T>, dto: any, user?: Customer) {
+      await this.repository.update(
+        { id: instance.id, customer_id: user.id } as any,
+        dto,
+      );
+      return {
+        ...instance,
+        ...dto,
+      };
     }
 
-    async delete(id: string, user?: Customer) {
-      return this.repository.softDelete({ id, customer_id: user.id } as any);
+    async delete(instance: InstanceType<T>, user?: Customer) {
+      return this.repository.softDelete({
+        id: instance.id,
+        customer_id: user.id,
+      } as any);
     }
   }
 
