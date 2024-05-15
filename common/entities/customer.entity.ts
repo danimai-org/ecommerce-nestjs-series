@@ -11,11 +11,11 @@ import {
 } from 'typeorm';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
-import { CustomerToken } from './customer_token.entity';
+import type { CustomerToken } from './customer_token.entity';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
-import { Media } from './media.entity';
-import { CustomerSession } from './customer_session.entity';
+import type { Media } from './media.entity';
+import type { CustomerSession } from './customer_session.entity';
 import type { Address } from './address.entity';
 
 export enum AuthProvider {
@@ -63,28 +63,28 @@ export class Customer extends BaseEntity {
   provider: AuthProvider;
 
   @ApiHideProperty()
-  @OneToMany(() => CustomerToken, (token) => token.customer)
-  tokens: CustomerToken[];
+  @OneToMany('CustomerToken', 'customer')
+  tokens: Relation<CustomerToken[]>;
 
   @ApiHideProperty()
   @Exclude()
   previousPassword: string;
 
   @ApiHideProperty()
-  @ManyToOne(() => Media, (media) => media.avatars)
+  @ManyToOne('Media', 'avatars')
   @JoinColumn({ name: 'avatar_id' })
-  avatar: Media;
+  avatar: Relation<Media>;
 
   @ApiHideProperty()
   @Column({ type: 'uuid', nullable: true })
   avatar_id: string;
 
   @ApiHideProperty()
-  @OneToMany(() => CustomerSession, (session) => session.customer)
-  sessions: CustomerSession[];
+  @OneToMany('CustomerSession', 'customer')
+  sessions: Relation<CustomerSession[]>;
 
   @OneToMany('Address', 'customer')
-  addresses: Relation<Address>[];
+  addresses: Relation<Address[]>;
 
   @AfterLoad()
   storePasswordInCache() {

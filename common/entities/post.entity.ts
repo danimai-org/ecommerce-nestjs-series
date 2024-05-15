@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
-import { User } from './user.entity';
+import type { User } from './user.entity';
 import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ValidationGroup } from 'common/crud/validation-group';
 
@@ -26,10 +26,9 @@ export class Post extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   is_published: boolean;
 
-  @ApiProperty({ type: () => User })
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne('User', 'posts')
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: Relation<User>;
 
   @ApiProperty()
   @Column({ type: 'uuid' })

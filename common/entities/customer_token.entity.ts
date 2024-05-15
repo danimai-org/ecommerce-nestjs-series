@@ -1,7 +1,7 @@
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base';
-import { Customer } from './customer.entity';
+import type { Customer } from './customer.entity';
 
 export enum TokenType {
   REGISTER_VERIFY = 'REGISTER_VERIFY',
@@ -25,7 +25,7 @@ export class CustomerToken extends BaseEntity {
   @Column({ type: 'uuid' })
   customer_id: string;
 
-  @ManyToOne(() => Customer, (customer) => customer.tokens)
+  @ManyToOne('Customer', '')
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 

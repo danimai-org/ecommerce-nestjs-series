@@ -1,6 +1,13 @@
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from 'typeorm';
+import type { User } from './user.entity';
 import { BaseEntity } from './base';
 
 export enum TokenType {
@@ -25,9 +32,9 @@ export class Token extends BaseEntity {
   @Column({ type: 'uuid' })
   user_id: string;
 
-  @ManyToOne(() => User, (user) => user.tokens)
+  @ManyToOne('User', 'tokens')
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: Relation<User>;
 
   @BeforeInsert()
   async generateToken() {

@@ -7,15 +7,16 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
 import { Token } from './user_token.entity';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
-import { Media } from './media.entity';
-import { Session } from './user_session.entity';
-import { Post } from './post.entity';
+import type { Media } from './media.entity';
+import type { Session } from './user_session.entity';
+import type { Post } from './post.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -49,21 +50,21 @@ export class User extends BaseEntity {
   previousPassword: string;
 
   @ApiHideProperty()
-  @ManyToOne(() => Media, (media) => media.avatars)
+  @ManyToOne('Media', 'avatars')
   @JoinColumn({ name: 'avatar_id' })
-  avatar: Media;
+  avatar: Relation<Media>;
 
   @ApiHideProperty()
   @Column({ type: 'uuid', nullable: true })
   avatar_id: string;
 
   @ApiHideProperty()
-  @OneToMany(() => Session, (session) => session.user)
-  sessions: Session[];
+  @OneToMany('Session', 'user')
+  sessions: Relation<Session[]>;
 
   @ApiHideProperty()
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+  @OneToMany('Post', 'user')
+  posts: Relation<Post[]>;
 
   @AfterLoad()
   storePasswordInCache() {

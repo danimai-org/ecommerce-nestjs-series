@@ -65,7 +65,7 @@ export class Address extends BaseEntity {
 
   @ManyToOne('Customer', 'addresses')
   @JoinColumn({ name: 'customer_id' })
-  addresses: Relation<Customer>[];
+  customer: Relation<Customer>;
 
   @ApiProperty()
   @Column({ type: 'uuid' })

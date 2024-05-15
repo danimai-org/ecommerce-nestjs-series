@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from './base';
-import { User } from './user.entity';
+import type { User } from './user.entity';
+import type { ProductVariantMedia } from './product_variant_media.entity';
 
 export enum StorageType {
   LOCAL = 'LOCAL',
@@ -24,6 +25,9 @@ export class Media extends BaseEntity {
   @Column({ type: 'int' })
   size: number;
 
-  @OneToMany(() => User, (user) => user.avatar)
+  @OneToMany('User', 'avatar')
   avatars: User;
+
+  @OneToMany('ProductVariantMedia', 'media')
+  variants: Relation<ProductVariantMedia>;
 }
