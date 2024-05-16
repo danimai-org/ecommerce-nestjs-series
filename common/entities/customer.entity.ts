@@ -17,6 +17,7 @@ import { Exclude } from 'class-transformer';
 import type { Media } from './media.entity';
 import type { CustomerSession } from './customer_session.entity';
 import type { Address } from './address.entity';
+import type { Cart } from './cart.entity';
 
 export enum AuthProvider {
   GOOGLE = 'GOOGLE',
@@ -85,6 +86,9 @@ export class Customer extends BaseEntity {
 
   @OneToMany('Address', 'customer')
   addresses: Relation<Address[]>;
+
+  @OneToMany('Cart', 'customer')
+  carts: Relation<Cart[]>;
 
   @AfterLoad()
   storePasswordInCache() {

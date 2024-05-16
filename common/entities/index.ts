@@ -10,6 +10,8 @@ import { Session } from './user_session.entity';
 import { Token } from './user_token.entity';
 import { ProductVariantMedia } from './product_variant_media.entity';
 import { Customer } from './customer.entity';
+import { CartItem } from './cart_item.entity';
+import { Cart } from './cart.entity';
 
 export const loadEntities = [
   CustomerSession,
@@ -24,4 +26,6 @@ export const loadEntities = [
   Product,
   ProductVariant,
   ProductVariantMedia,
+  Cart,
+  CartItem,
 ];

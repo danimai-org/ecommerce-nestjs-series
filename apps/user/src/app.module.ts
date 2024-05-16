@@ -10,6 +10,9 @@ import { GoogleAuthModule } from './auth-google/google.module';
 import { CustomerModule } from './customer/customer.module';
 import { EmailAuthModule } from './auth-email/email.module';
 import { AddressModule } from './address/address.module';
+import { ProductModule } from './product/product.module';
+import { ProductVariantModule } from './product-variant/product-variant.module';
+import { CartModule } from './cart/cart.module';
 
 const modules = [
   AuthModule,
@@ -17,6 +20,9 @@ const modules = [
   GoogleAuthModule,
   CustomerModule,
   AddressModule,
+  ProductModule,
+  ProductVariantModule,
+  CartModule,
 ];
 
 export const global_modules = [

@@ -10,6 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from './base';
 import type { Product } from './product.entity';
 import type { ProductVariantMedia } from './product_variant_media.entity';
+import type { CartItem } from './cart_item.entity';
 
 @Entity({ name: 'product_variants' })
 export class ProductVariant extends BaseEntity {
@@ -27,6 +28,9 @@ export class ProductVariant extends BaseEntity {
 
   @OneToMany('ProductVariantMedia', 'variant')
   media: Relation<ProductVariantMedia>;
+
+  @OneToMany('CartItem', 'variant')
+  cartItems: Relation<CartItem>;
 
   @ApiProperty({ example: 'Price' })
   @Column({ type: 'decimal' })
