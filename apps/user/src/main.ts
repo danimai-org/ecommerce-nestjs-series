@@ -8,7 +8,7 @@ import {
 
 async function bootstrap() {
   // User Module Setup
-  const app = await NestFactory.create(UserAppModule);
+  const app = await NestFactory.create(UserAppModule, { rawBody: true });
   createApplication(app);
   const userConfigService = app.get(ConfigService);
   documentationBuilder(app, userConfigService);

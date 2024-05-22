@@ -18,6 +18,7 @@ import type { Media } from './media.entity';
 import type { CustomerSession } from './customer_session.entity';
 import type { Address } from './address.entity';
 import type { Cart } from './cart.entity';
+import type { Order } from './order.entity';
 
 export enum AuthProvider {
   GOOGLE = 'GOOGLE',
@@ -66,6 +67,10 @@ export class Customer extends BaseEntity {
   @ApiHideProperty()
   @OneToMany('CustomerToken', 'customer')
   tokens: Relation<CustomerToken[]>;
+
+  @ApiHideProperty()
+  @OneToMany('Order', 'customer')
+  orders: Relation<Order[]>;
 
   @ApiHideProperty()
   @Exclude()

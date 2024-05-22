@@ -12,6 +12,8 @@ import { ProductVariantMedia } from './product_variant_media.entity';
 import { Customer } from './customer.entity';
 import { CartItem } from './cart_item.entity';
 import { Cart } from './cart.entity';
+import { Order } from './order.entity';
+import { Payment } from './payment.entity';
 
 export const loadEntities = [
   CustomerSession,
@@ -28,4 +30,6 @@ export const loadEntities = [
   ProductVariantMedia,
   Cart,
   CartItem,
+  Order,
+  Payment,
 ];

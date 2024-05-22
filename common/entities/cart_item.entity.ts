@@ -20,6 +20,10 @@ export class CartItem extends BaseEntity {
   quantity: number;
 
   @ApiProperty()
+  @Column({ nullable: true })
+  price: number;
+
+  @ApiProperty()
   @Column({ type: 'uuid' })
   cart_id: string;
 

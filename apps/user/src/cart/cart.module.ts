@@ -10,5 +10,6 @@ import { ProductVariantModule } from '../product-variant/product-variant.module'
   imports: [TypeOrmModule.forFeature([Cart, CartItem]), ProductVariantModule],
   providers: [CartService],
   controllers: [CartController],
+  exports: [CartService],
 })
 export class CartModule {}

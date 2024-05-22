@@ -3,6 +3,7 @@ import authConfig from './auth.config';
 import databaseConfig from './database.config';
 import mailConfig from './mail.config';
 import storageConfig from './storage.config';
+import stripeConfig from './stripe.config';
 
 export const configLoads = [
   databaseConfig,
@@ -10,4 +11,5 @@ export const configLoads = [
   authConfig,
   mailConfig,
   storageConfig,
+  stripeConfig,
 ];

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configLoads } from '../../../common/modules/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,9 @@ import { AddressModule } from './address/address.module';
 import { ProductModule } from './product/product.module';
 import { ProductVariantModule } from './product-variant/product-variant.module';
 import { CartModule } from './cart/cart.module';
+import { StripeModule } from './stripe/stripe.module';
+import { PaymentModule } from './payment/payment.module';
+import { OrderModule } from './order/order.module';
 
 const modules = [
   AuthModule,
@@ -23,6 +26,9 @@ const modules = [
   ProductModule,
   ProductVariantModule,
   CartModule,
+  PaymentModule,
+  OrderModule,
+  forwardRef(() => StripeModule),
 ];
 
 export const global_modules = [
