@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { LoginDto, ResetPasswordDto, SendVerifyMailDto } from './email.dto';
 import { TokenService } from '../token/token.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,37 +24,12 @@ export class EmailService {
     if (!user.is_active) {
       throw new UnprocessableEntityException({ email: 'User not active' });
     }
-    if (!user.email_verified_at) {
-      throw new UnprocessableEntityException({ email: 'User not verified' });
-    }
     if (!user.comparePassword(loginDto.password)) {
       throw new UnprocessableEntityException({
         password: 'Password is incorrect',
       });
     }
     return this.authService.createJwtToken(user);
-  }
-
-  async sendVerifyMail(sendVerifyMailDto: SendVerifyMailDto) {
-    const user = await this.userRepository.findOne({
-      where: { email: sendVerifyMailDto.email.toLowerCase() },
-    });
-
-    if (!user) {
-      throw new NotFoundException({ email: 'User not found' });
-    }
-    if (user.email_verified_at) {
-      throw new UnprocessableEntityException({
-        email: 'User already verified',
-      });
-    }
-    const token = await this.tokenService.create(user, 'REGISTER_VERIFY');
-    await this.authService.userRegisterEmail({
-      to: user.email,
-      data: {
-        hash: token.token,
-      },
-    });
   }
 
   async sendForgotMail(sendForgotMailDto: SendVerifyMailDto) {
@@ -68,12 +39,6 @@ export class EmailService {
 
     if (!user) {
       throw new UnprocessableEntityException({ email: 'User not found' });
-    }
-
-    if (!user.email_verified_at) {
-      throw new UnprocessableEntityException({
-        email: 'Please verify email first.',
-      });
     }
 
     const token = await this.tokenService.create(user, 'RESET_PASSWORD');

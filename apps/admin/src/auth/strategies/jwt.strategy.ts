@@ -40,9 +40,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       }
 
       const { user } = session;
-      if (!user.email_verified_at) {
-        throw new UnauthorizedException('Please verify your email.');
-      }
 
       if (!user.is_active) {
         throw new ForbiddenException('Your account is not active.');

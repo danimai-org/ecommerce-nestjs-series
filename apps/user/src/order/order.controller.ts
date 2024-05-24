@@ -12,6 +12,8 @@ import { OrderService } from './order.service';
 import { orderPaginateConfig } from './order.pagination';
 import { Order } from 'common/entities/order.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { UserParam } from 'common/decorators/user.decorator';
+import { Customer } from 'common/entities/customer.entity';
 
 @ApiTags('Order')
 @Controller({
@@ -25,8 +27,11 @@ export class OrderController {
 
   @Get()
   @ApiPaginationQuery(orderPaginateConfig)
-  async getAll(@Paginate() query: PaginateQuery) {
-    return this.service.getAll(query);
+  async getAll(
+    @Paginate() query: PaginateQuery,
+    @UserParam() customer: Customer,
+  ) {
+    return this.service.getAll(query, customer);
   }
 
   @Get(':id')

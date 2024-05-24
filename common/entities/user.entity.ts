@@ -21,12 +21,8 @@ import type { Post } from './post.entity';
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
   @ApiProperty({ example: 'Danimai' })
-  @Column({ type: 'varchar', length: 50 })
-  first_name: string;
-
-  @ApiProperty({ example: 'Mandal' })
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  last_name: string;
+  @Column({ type: 'varchar', length: 200 })
+  name: string;
 
   @ApiProperty({ example: 'example@danimai.com' })
   @Column({ type: 'varchar', length: 255, unique: true })

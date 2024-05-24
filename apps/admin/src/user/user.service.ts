@@ -15,9 +15,7 @@ export class UserService {
     private mediaService: MediaService,
   ) {}
 
-  async create(
-    userCreateDto: RegisterDto | Pick<User, 'email_verified_at' | 'is_active'>,
-  ) {
+  async create(userCreateDto: RegisterDto | Pick<User, 'is_active'>) {
     const user = User.create({ ...userCreateDto });
     return this.userRepository.save(user);
   }

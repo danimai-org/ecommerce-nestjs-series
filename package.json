@@ -21,8 +21,10 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
     "migration:generate": "npm run typeorm -- migration:generate common/modules/database/migrations/migrations -d ormconfig.ts",
     "migration:run": "npm run typeorm -- -d ormconfig.ts migration:run",
+    "migration:show": "npm run typeorm -- -d ormconfig.ts migration:show",
     "migration:revert": "npm run typeorm -- -d ormconfig.ts migration:revert",
-    "seed": "ts-node -r tsconfig-paths/register common/seeding/$FILE.seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register common/seeding/$FILE.seed.ts",
+    "create-admin": "ts-node -r tsconfig-paths/register common/seeding/admin.seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.554.0",

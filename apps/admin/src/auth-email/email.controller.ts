@@ -25,22 +25,6 @@ export class EmailController {
     return this.emailService.login(loginDto);
   }
 
-  @Post('/send-verify-email')
-  @ApiOperation({ summary: 'Send Verification mail.' })
-  @ApiNoContentResponse({
-    description: 'Sent Verification mail.',
-  })
-  @ApiForbiddenResponse({
-    description: 'User already verified.',
-  })
-  @ApiNotFoundResponse({
-    description: 'User not found.',
-  })
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async sendVerifyMail(@Body() sendVerifyMailDto: SendVerifyMailDto) {
-    return this.emailService.sendVerifyMail(sendVerifyMailDto);
-  }
-
   @Post('/reset-password-request')
   @ApiOperation({ summary: 'Send Reset Password mail.' })
   @ApiNoContentResponse({

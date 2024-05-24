@@ -24,8 +24,18 @@ export class PaymentService {
     private stripeService: StripeService,
   ) {}
 
-  async getAll(query: PaginateQuery) {
-    return paginate(query, this.paymentRepository, paymentPaginateConfig);
+  async getAll(query: PaginateQuery, customer: Customer) {
+    return paginate(
+      {
+        ...query,
+        filter: {
+          ...query.filter,
+          customer_id: customer.id,
+        },
+      },
+      this.paymentRepository,
+      paymentPaginateConfig,
+    );
   }
 
   async create(createPaymentDto: CreatePaymentDto, customer: Customer) {

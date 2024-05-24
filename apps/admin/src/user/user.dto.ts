@@ -14,11 +14,5 @@ export class UserUpdateDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  first_name: string;
-
-  @ApiProperty({ example: 'Mandal', required: false })
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  last_name: string;
+  name: string;
 }

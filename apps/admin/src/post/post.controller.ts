@@ -7,7 +7,6 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -23,12 +22,17 @@ import { ValidationGroup } from 'common/crud/validation-group';
 import { UserParam } from 'common/decorators/user.decorator';
 import { Post as PostEntity } from 'common/entities/post.entity';
 import { User } from 'common/entities/user.entity';
-import { ApiPaginatedResponse } from 'common/pagination/pagination.decorator';
-import { PaginationQuery } from 'common/pagination/pagination.dto';
 import { IsIDExistPipe } from 'common/pipes/IsIDExist.pipe';
 import validationOptions from 'common/utils/validation-options';
 import { PostService } from './post.service';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiOkPaginatedResponse,
+  ApiPaginationQuery,
+  Paginate,
+  PaginateQuery,
+} from 'nestjs-paginate';
+import { postPaginateConfig } from './post.pagination';
 
 @ApiTags('Post')
 @Controller({
@@ -61,11 +65,10 @@ export class PostController {
   }
 
   @Get()
-  @ApiPaginatedResponse({
-    type: PostEntity,
-  })
-  getAll(@Query() paginationDto: PaginationQuery, @UserParam() user: User) {
-    return this.postService.getAll(user, paginationDto);
+  @ApiOkPaginatedResponse(PostEntity, postPaginateConfig)
+  @ApiPaginationQuery(postPaginateConfig)
+  getAll(@Paginate() query: PaginateQuery, @UserParam() user: User) {
+    return this.postService.getAll(user, query);
   }
 
   @Get(':id')

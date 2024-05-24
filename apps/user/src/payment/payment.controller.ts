@@ -20,8 +20,11 @@ export class PaymentController {
 
   @Get()
   @ApiPaginationQuery(paymentPaginateConfig)
-  async getAll(@Paginate() query: PaginateQuery) {
-    return this.service.getAll(query);
+  async getAll(
+    @Paginate() query: PaginateQuery,
+    @UserParam() customer: Customer,
+  ) {
+    return this.service.getAll(query, customer);
   }
 
   @Post()

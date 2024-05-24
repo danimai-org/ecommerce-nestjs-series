@@ -18,8 +18,18 @@ export class OrderService {
     private cartService: CartService,
   ) {}
 
-  async getAll(query: PaginateQuery) {
-    return paginate(query, this.orderRepository, orderPaginateConfig);
+  async getAll(query: PaginateQuery, customer: Customer) {
+    return paginate(
+      {
+        ...query,
+        filter: {
+          ...query.filter,
+          customer_id: customer.id,
+        },
+      },
+      this.orderRepository,
+      orderPaginateConfig,
+    );
   }
 
   async upsert(customer: Customer, address: Address, cart: Cart) {
